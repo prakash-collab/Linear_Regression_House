@@ -1,4 +1,4 @@
-name: Production Deployment
+name: Deployment
 
 on:
   workflow_dispatch:
@@ -6,12 +6,12 @@ on:
       deployment_stage:
         description: 'Select the Deployment Stage'
         required: true
-        default: 'staging'
+        default: 'SAT'
         type: choice
         options:
-          - dev
-          - staging
-          - production
+          - ENG
+          - SAT
+          - PROD
       data_config:
         description: 'Configuration Value (data-config)'
         required: false
