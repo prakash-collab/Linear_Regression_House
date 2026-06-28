@@ -1,0 +1,44 @@
+name: Production Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_stage:
+        description: 'Select the Deployment Stage'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - dev
+          - staging
+          - production
+      data_config:
+        description: 'Configuration Value (data-config)'
+        required: false
+        default: 'default-config-value'
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Execute Stage Deployment
+        run: |
+          echo "Target Stage: ${{ github.event.inputs.deployment_stage }}"
+          echo "Config Value: ${{ github.event.inputs.data_config }}"
+          
+          # Example usage in your deployment scripts:
+          # python deploy.py --env="${{ github.event.inputs.deployment_stage }}" --config="${{ github.event.inputs.data_config }}"
